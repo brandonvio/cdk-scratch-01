@@ -27,7 +27,7 @@ export class VpcStack extends cdk.Stack {
         },
       },
       natGatewayProvider: ec2.NatProvider.instance({
-        instanceType: new ec2.InstanceType("t3.nano"),
+        instanceType: new ec2.InstanceType("t2.micro"),
         machineImage: new ec2.NatInstanceImage(),
         keyName: "scratch-key-pair-01",
       }),

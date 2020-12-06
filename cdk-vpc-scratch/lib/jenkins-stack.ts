@@ -29,7 +29,7 @@ export class JenkinsStack extends cdk.Stack {
 
     this.jenkinsInstance = new ec2.Instance(this, "jenkinsInstance", {
       vpc: props.vpc,
-      instanceType: new ec2.InstanceType("t3.nano"),
+      instanceType: new ec2.InstanceType("t3a.small"),
       machineImage: new ec2.GenericLinuxImage({
         "us-west-2": "ami-07dd19a7900a1f049",
       }),

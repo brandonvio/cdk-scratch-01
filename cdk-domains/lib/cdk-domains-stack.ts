@@ -1,6 +1,5 @@
 import * as cdk from "@aws-cdk/core";
 import { RythmDomainStack } from "./rythm-domain-stack";
-import { SubdomainsStack } from "./subdomains-stack";
 
 export class CdkDomainsStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
@@ -14,12 +13,16 @@ export class CdkDomainsStack extends cdk.Stack {
       },
     });
 
-    const stack2 = new SubdomainsStack(this, "SubdomainsStack", {
-      zone: stack1.zone,
-      env: {
-        account: "778477161868",
-        region: "us-west-2",
-      },
+    new cdk.CfnOutput(this, "Rythm HostedZone Name", {
+      value: stack1.zone.zoneName,
     });
+
+    // const stack2 = new SubdomainsStack(this, "SubdomainsStack", {
+    //   zone: stack1.zone,
+    //   env: {
+    //     account: "778477161868",
+    //     region: "us-west-2",
+    //   },
+    // });
   }
 }

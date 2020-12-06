@@ -1,8 +1,9 @@
 import * as cdk from "@aws-cdk/core";
 import * as ec2 from "@aws-cdk/aws-ec2";
 import * as elbv2 from "@aws-cdk/aws-elasticloadbalancingv2";
-import * as targets from "@aws-cdk/aws-elasticloadbalancingv2-targets";
-import * as assets from "@aws-cdk/aws-s3-assets";
+import * as elbtargets from "@aws-cdk/aws-elasticloadbalancingv2-targets";
+import * as route53 from "@aws-cdk/aws-route53";
+import * as targets from "@aws-cdk/aws-route53-targets";
 var path = require("path");
 
 export interface AlbStackProps extends cdk.StackProps {
@@ -48,14 +49,25 @@ export class AlbStack extends cdk.Stack {
       certificates: [cert],
     });
 
-    listener.addTargets("ApplicationFleet", {
+    listener.addTargets("JenkinsTarget", {
       port: 8080,
-      targets: [new targets.InstanceTarget(props.jenkinsInstance, 8080)],
+      targets: [new elbtargets.InstanceTarget(props.jenkinsInstance, 8080)],
       healthCheck: {
         enabled: true,
         protocol: elbv2.Protocol.HTTP,
         healthyHttpCodes: "200,403",
       },
+    });
+
+    const zone = route53.PublicHostedZone.fromHostedZoneAttributes(this, "hostedZone", {
+      hostedZoneId: "Z02910872WY3GQAAWBJ50",
+      zoneName: "rythm.cc",
+    });
+
+    const buildARecord = new route53.ARecord(this, "BuildARecord", {
+      zone: zone,
+      recordName: "build",
+      target: route53.RecordTarget.fromAlias(new targets.LoadBalancerTarget(lb)),
     });
   }
 }

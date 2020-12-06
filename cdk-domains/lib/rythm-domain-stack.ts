@@ -15,6 +15,10 @@ export class RythmDomainStack extends cdk.Stack {
       zoneName: "rythm.cc",
     });
 
+    new cdk.CfnOutput(this, "Rythm HostedZoneID", {
+      value: zone.hostedZoneId,
+    });
+
     const cert = new acm.Certificate(this, "RythmCertificate", {
       subjectAlternativeNames: ["rythm.cc"],
       domainName: "*.rythm.cc",

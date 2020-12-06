@@ -15,7 +15,7 @@ export class SubdomainsStack extends cdk.Stack {
 
     const loadBalancer = elb.ApplicationLoadBalancer.fromLookup(this, "ALB", {
       loadBalancerArn:
-        "arn:aws:elasticloadbalancing:us-west-2:778477161868:loadbalancer/app/CdkVp-LB8A1-JWFMM4KFQVT1/850ce8fc26879717",
+        "arn:aws:elasticloadbalancing:us-west-2:778477161868:loadbalancer/app/CdkVp-LB8A1-2BRE7RDZCORV/25155e948c0547ad",
     });
 
     const buildARecord = new route53.ARecord(this, "BuildARecord", {
