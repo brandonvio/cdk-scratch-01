@@ -1,0 +1,27 @@
+import * as cdk from "@aws-cdk/core";
+import * as route53 from "@aws-cdk/aws-route53";
+import * as targets from "@aws-cdk/aws-route53-targets";
+import * as elb from "@aws-cdk/aws-elasticloadbalancingv2";
+import * as acm from "@aws-cdk/aws-certificatemanager";
+import { VerificationEmailStyle } from "@aws-cdk/aws-cognito";
+
+interface SubdomainsStackProps extends cdk.StackProps {
+  zone: route53.HostedZone;
+}
+
+export class SubdomainsStack extends cdk.Stack {
+  constructor(scope: cdk.Construct, id: string, props: SubdomainsStackProps) {
+    super(scope, id, props);
+
+    const loadBalancer = elb.ApplicationLoadBalancer.fromLookup(this, "ALB", {
+      loadBalancerArn:
+        "arn:aws:elasticloadbalancing:us-west-2:778477161868:loadbalancer/app/CdkVp-LB8A1-JWFMM4KFQVT1/850ce8fc26879717",
+    });
+
+    const buildARecord = new route53.ARecord(this, "BuildARecord", {
+      zone: props.zone,
+      recordName: "build",
+      target: route53.RecordTarget.fromAlias(new targets.LoadBalancerTarget(loadBalancer)),
+    });
+  }
+}
