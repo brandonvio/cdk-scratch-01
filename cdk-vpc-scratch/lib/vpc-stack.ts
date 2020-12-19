@@ -1,8 +1,6 @@
 import * as cdk from "@aws-cdk/core";
 import * as ec2 from "@aws-cdk/aws-ec2";
-import * as elbv2 from "@aws-cdk/aws-elasticloadbalancingv2";
-import * as targets from "@aws-cdk/aws-elasticloadbalancingv2-targets";
-import * as assets from "@aws-cdk/aws-s3-assets";
+
 var path = require("path");
 
 interface Stack2Props extends cdk.StackProps {
@@ -19,6 +17,7 @@ export class VpcStack extends cdk.Stack {
     this.vpc = new ec2.Vpc(this, "VpcStackTestNat", {
       maxAzs: 2,
       cidr: "10.0.0.0/24",
+
       enableDnsHostnames: true,
       enableDnsSupport: true,
       gatewayEndpoints: {

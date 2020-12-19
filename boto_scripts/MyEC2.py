@@ -29,7 +29,7 @@ class MyEC2:
             print(instance.id, instance.instance_type, instance.state)
             if instance.state["Code"] == 16:
                 print("stopping instance " + instance.id)
-                # instance.stop()
+                instance.stop()
 
     def start_all_instances(self):
         instances = self.get_instances()
